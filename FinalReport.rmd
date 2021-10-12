@@ -26,7 +26,7 @@ If not, then whose view differs from whom??
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
 
-We intend to get a small subset of data out from the GSS data set we uploaded. We will focus onlt on the RACE and CAPPUN variables. This is a categorical by categorical problem so we will be using the categorical by categorical helper file.
+We intend to get a small subset of data out from the GSS data set. We will focus only on the race (RACE) and capital punishment (CAPPUN) variables. This is a categorical by categorical problem so we will be using the categorical by categorical helper file.
 
 # Results
 
@@ -44,7 +44,7 @@ barchartGC(~RACE + CAPPUN,data=GSS, type="percent")
 
 ```
 
-We can see a difference within the black community where majority opposes capital punnishment meanwhile in the white and other communities majority support capital punishment. 
+We can see a difference within the black community where majority opposes capital punishment meanwhile in the white and other communities majority support capital punishment. 
 
 ### Numerical Descriptive Results
 
@@ -138,10 +138,152 @@ fisherXY = function(x, y, confL = 0, printAll=FALSE){
 fisherXY(GSS$CAPPUN,GSS$RACE)
 ```
 
-There is a difference between the white community and the black community on whether they do or don't support capital punishment. Between white and other communities there's is a difference on their stance on capital punishment. Between black and other communities there is also a difference in their stance on capital punishment. We can confirm this from the p-value of each respective test being 0.001282 in the Chi-squared test and 0.02479 in the Fisher's exact test, both of which are less than one, therefor we can reject the null hypothesis.  
+There is a difference between the white community and the black community on whether they do or don't support capital punishment. Between white and other communities there's is a difference on their stance on capital punishment. Between black and other communities there is also a difference in their stance on capital punishment. We can confirm this from the p-value of each respective test, therefor we can reject the null hypothesis.  
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
 
-We looked at the bar plots for each race. We determined that the black community's stance on capital punishment was visually different from the white and other communities. We conducted fisherXY tests and were able to confirm that the stance on capital punishment for the black community was significantly different than for the white and other communities. A majority of the black community opposed capital punishment while the majority in the white and other communities favored capital punishment. 
+We looked at the bar plots for each race. We determined that the black community's stance on capital punishment was visually different from the white and other communities. We conducted fisherXY tests and were able to confirm that the stance on capital punishment for the black community was significantly different than for the white and other communities. A majority of the black community opposed capital punishment while the majority in the white and other communities favored capital punishment.  
+  
+-------------------------------------------------------------------------------------------------
+```{r include=FALSE,echo=FALSE}
+require(tidyverse)
+require(tigerstats)
+require(knitr)
+require(foreign)
+#GSS<-read.csv(file="GSScsv.csv",header=TRUE)
+GSS<-read.dta("GSS2018.dta")
+GSS<-droplevels(GSS)
+```
+
+# Introduction
+
+<!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
+
+Is attitude toward capitol punishment (cappun) independent of race (race)?
+If not, then whose view differs from whom??
+
+# Methods
+
+<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
+
+We intend to get a small subset of data out from the GSS 2018 data set. We will focus only on the race (race) andcapital punishment (cappun) variables. This is a categorical by categorical problem so we will be using the categorical by categorical helper file.
+
+# Results
+
+<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+
+## Descriptive Results
+
+### Graphical Descriptive Results
+
+<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
+
+```{r}
+barchartGC(~race + cappun,data=GSS)
+barchartGC(~race + cappun,data=GSS, type="percent")
+
+```
+
+We can see a difference within the black community where majority opposes capital punishment meanwhile in the white and other communities majority support capital punishment. 
+
+### Numerical Descriptive Results
+
+<!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+```{r}
+table1 <- xtabs(~race + cappun, data=GSS)
+rowPerc(table1)
+colPerc(table1)
+```
+
+In the white community, approximately 68% favor and 32% oppose capital punishment. In the black community, approximately 46% favor and 54% oppose capital punishment. In the other community, approximately 55% favor and 44% oppose capital punishment. This supports the statement that the black community's stance on capital punishment differs from the white and other communities' stance on capital punishment.With a larger data set, there are differences in the percentage ratios for the black and other communities.   
+
+## Inferential Results
+
+<!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+```{r}
+fisherXY = function(x, y, confL = 0, printAll=FALSE){
+  # Inputs: 
+  #   x: factor variable, 2 levels
+  #   y: factor variable, n levels
+  # confL: confidence level, default = 0.95
+  #        print only those tables, results if p-value < (1-confL)
+  # printAll: overide the 'print only if p-value < (1-confL), and
+  #           print all tables and fisher test results
+  #
+  # Constraint:
+  #   x and y must be same length
+  #
+  # Outputs:
+  #   All 2x2 Fisher exact tests
+  
+  if(confL<0 || confL> 1){
+    print('error: confL must be between 0 and 1')
+    return(999)
+  }
+  
+  if(!is.factor(x)) x=as.factor(x)
+  if(!is.factor(y)) y=as.factor(y)
+  
+  fisherTable = as.matrix(table(x, y))
+  cat('\ncontingency table:\n')
+  print(fisherTable)
+  cat('\n***All 2X2 tests****\n\n')
+
+  # all 2x2 tests
+  levelsY = levels(y)
+  levelsX = levels(x)
+  
+  m = length(levelsX)
+  n = length(levelsY)
+  
+  confLevel = 0.95
+  if (confL !=0 ) confLevel=confL
+  
+  for (i in 1:(m-1))
+       for(j in ((i+1):m))
+          for (k in 1:(n-1))
+             for (l in ((k+1):n)) {
+                
+                 fisherIndexX = c(i,j)
+                 fisherIndexY = c(k,l)
+                 
+                 fTempTable = as.matrix(fisherTable[fisherIndexX,
+                                        fisherIndexY])
+                 
+                 fisherTest=fisher.test(fTempTable, conf.int = TRUE, 
+                              conf.level = confLevel)
+                 
+                 if((fisherTest$p.value < (1-confLevel) ) || printAll){
+                   
+                       print(c(levelsX[i], levelsX[j]))
+                       print(c(levelsY[k], levelsY[l]))
+                       print(fTempTable)
+                       print(fisherTest)
+                       cat('\n')
+                 }
+                 
+        }
+}
+
+```
+```{r}
+fisherXY(GSS$cappun,GSS$race)
+```
+
+There is a difference between the white community and the black community on whether they do or don't support capital punishment. Between white and other communities there's is a difference on their stance on capital punishment. Between black and other communities there is also a difference in their stance on capital punishment. We can confirm this from the p-value of each respective test, therefor we can reject the null hypothesis. Due to the larger data set the differences between the groups are not as dramatic as the GSS data set.  
+
+# Discussion and Conclusion
+
+<!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+We looked at a much larger data set (GSS 2018) in the section. We looked at the bar plots for each race. We determined that the black community's stance on capital punishment was visually different from the white and other communities. We conducted fisherXY tests and were able to confirm that the stance on capital punishment for the black community was different than for the white and other communities. However, the difference we saw was not as great as in the previous data set (GSS) but the stance still remained the same meaning the black community still opposed capital punishment while the white and other communities favored capital punishment. We were able to see a difference between the white and other communities, which we were unable to see in the smaller data set (GSS). With a larger data set, we are able to make better distinctions which we are unable to see with a smaller data set.  
