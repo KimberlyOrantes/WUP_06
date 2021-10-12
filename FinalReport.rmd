@@ -143,3 +143,5 @@ There is a difference between the white community and the black community on whe
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+We looked at the bar plots for each race. We determined that the black community's stance on capital punishment was visually different from the white and other communities. We conducted fisherXY tests and were able to confirm that the stance on capital punishment for the black community was significantly different than for the white and other communities. A majority of the black community opposed capital punishment while the majority in the white and other communities favored capital punishment. 
