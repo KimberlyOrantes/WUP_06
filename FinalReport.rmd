@@ -44,15 +44,19 @@ barchartGC(~RACE + CAPPUN,data=GSS, type="percent")
 
 ```
 
+We can see a difference within the black community where majority opposes capital punnishment meanwhile in the white and other communities majority support capital punishment. 
+
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ```{r}
-table2 <- xtabs(~RACE + CAPPUN, data=GSS)
-rowPerc(table2)
-colPerc(table2)
+table1 <- xtabs(~RACE + CAPPUN, data=GSS)
+rowPerc(table1)
+colPerc(table1)
 ```
+
+  
 
 ## Inferential Results
 
