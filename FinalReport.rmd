@@ -138,6 +138,7 @@ fisherXY = function(x, y, confL = 0, printAll=FALSE){
 fisherXY(GSS$CAPPUN,GSS$RACE)
 ```
 
+There is a difference between the white community and the black community on whether they do or don't support capital punishment. Between white and other communities there's is a difference on their stance on capital punishment. Between black and other communities there is also a difference in their stance on capital punishment. We can confirm this from the p-value of each respective test being 0.001282 in the Chi-squared test and 0.02479 in the Fisher's exact test, both of which are less than one, therefor we can reject the null hypothesis.  
 
 # Discussion and Conclusion
 
