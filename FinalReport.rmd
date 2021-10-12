@@ -56,7 +56,7 @@ rowPerc(table1)
 colPerc(table1)
 ```
 
-  
+In the white community, approximately 68% favor and 32% oppose capital punishment. In the black community, approximately 35% favor and 65% oppose capital punishment. In the other community, approximately 83% favor and 17% oppose capital punishment. This supports the statement that the black community's stance on capital punishment differs from the white and other communities' stance on capital punishment.   
 
 ## Inferential Results
 
